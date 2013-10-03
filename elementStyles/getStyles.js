@@ -1,5 +1,11 @@
 StyleList = function() 
 {
+    /*
+     * Get all styles of an element
+     * 
+     * Thanks to marknadal on Stackoverflow
+     * http://stackoverflow.com/questions/754607/can-jquery-get-all-css-styles-associated-with-an-element 
+     */
     jQuery.fn.allcss = (function(css) {
         return function() {
             var dom = this.get(0);
@@ -31,6 +37,10 @@ StyleList = function()
         };
     })(jQuery.fn.allcss);
     
+    
+    /*
+     * Loop over every element
+     */
     $("*").each(function()
     {        
         //get element name
@@ -46,12 +56,14 @@ StyleList = function()
             name = name + " (depth  " + $(this).parents("ol, ul").length + ")";
         }
         
-        //all css
+        //create a table of all the styles for this element
         var styles = $(this).allcss();        
         createTable(name, styles);
     });
     
-    //format all styles into a table.
+    /*
+     * Format all styles into a table
+     */
     function createTable(name, styles)
     {
         //table heading with name
@@ -63,6 +75,7 @@ StyleList = function()
             table.append('<tr><td>' + key + '</td><td>' + value + '</td></tr>');
         });
         
+        //add table to end of page
         $('body').append(table);
     }
 }
