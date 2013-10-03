@@ -1,5 +1,18 @@
 StyleList = function() 
 {
+	/*
+     * Ignore these properties
+     */
+	var ignoreProperties = ["image-rendering", "direction", "empty-cells", "letter-spacing", "orphans", "pointer-events", "speak", "transition-delay", 
+	                        "transition-duration", "transition-property", "transition-timing-function", "unicode-bidi", "widows", "word-spacing", "caption-side",
+	                        "order", "buffered-rendering", "mask", "filter", "flood-color", "flood-opacity", "lighting-color", "stop-color", "z-index",
+	                        "stop-opacity", "clip-path", "clip-rule", "color-interpolation", "color-interpolation-filters", "color-rendering", "fill", "fill-opacity", 
+	                        "fill-rule", "marker-start", "marker-mid", "marker-end", "mask-type", "shape-rendering", "stroke", "stroke-dasharray", "stroke-dashoffset", 
+	                        "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke-width", "alignment-baseline", "baseline-shift", 
+	                        "dominant-baseline", "kerning", "text-anchor", "writing-mode", "glyph-orientation-horizontal", "glyph-orientation-vertical", 
+	                        "vector-effect", "page-break-after", "page-break-before", "page-break-inside", "text-transform", "tab-size", "align-self", "align-content",
+	                        "align-items", "text-rendering", "-webkit-font-kerning", "-webkit-font-smoothing", "-webkit-font-variant-ligatures", "-webkit-backface-visibility"];
+	
     /*
      * Get all styles of an element
      * 
@@ -72,7 +85,9 @@ StyleList = function()
         
         //rows for each style
         $.each(styles, function(key, value) {
-            table.append('<tr><td>' + key + '</td><td>' + value + '</td></tr>');
+        	if(jQuery.inArray(key, ignoreProperties) == -1) {        		
+        		table.append('<tr><td>' + key + '</td><td>' + value + '</td></tr>');
+        	}
         });
         
         //add table to end of page
