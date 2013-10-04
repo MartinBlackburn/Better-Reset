@@ -11,8 +11,11 @@ This gets all the styles for every element and creates a table (for each element
 (warning, this make the page VERY large)
 
 **comparison/index.html**  
-This has tables of each element and their CSS properties across each browser.  
-Only rows with differences will be displayed, as anything that is the same accross browsers doesn't need to be "reset".
+The index to all the comparison tables, with a way to select which table to view.
+
+**comparison/elements/<element>**  
+An element's table of CSS properties across each browser, this gets pulled into the index.  
+Only rows with differences will be displayed, as anything that is the same across browsers doesn't need to be "reset".
 
 **reset/betterReset.css**  
 This will be the new reset, worked out from the comparison tables.

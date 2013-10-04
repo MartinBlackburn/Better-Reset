@@ -64,8 +64,8 @@ StyleList = function()
             name = name + " - " + $(this).get(0).type;
         }
         
-        //add nesting level for LIs
-        if($(this).get(0).tagName == "LI") {
+        //add nesting level for LIs, ULs and OLs
+        if($(this).get(0).tagName == "LI" || $(this).get(0).tagName == "UL" || $(this).get(0).tagName == "OL") {
             name = name + " (depth  " + $(this).parents("ol, ul").length + ")";
         }
         
