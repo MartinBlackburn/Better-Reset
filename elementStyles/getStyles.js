@@ -43,22 +43,25 @@ StyleList = function()
      */
     $("*").each(function()
     {        
+        //cache element
+        var element = $(this).get(0);
+        
         //get element name
-        var name = $(this).get(0).tagName;
+        var name = element.tagName;
         
         //add type if it exists (for inputs)
-        if($(this).get(0).type) {
-            name = name + " - " + $(this).get(0).type;
+        if(element.type) {
+            name = name + " - " + element.type;
         }
         
         //add nesting level for LIs, ULs and OLs
-        if($(this).get(0).tagName == "LI" || $(this).get(0).tagName == "UL" || $(this).get(0).tagName == "OL") {
+        if(element.tagName == "LI" || element.tagName == "UL" || element.tagName == "OL") {
             name = name + " (depth  " + $(this).parents("ol, ul").length + ")";
         }
         
         //create a table of all the styles for this element
         var styles = $(this).allcss();        
-        createTable(name, styles);
+        createInputs(name, styles);
     });
     
     /*
@@ -77,6 +80,36 @@ StyleList = function()
         
         //add table to end of page
         $('body').append(table);
+    }
+    
+    /*
+     * Format all styles into inputs, for updating a database
+     */
+    function createInputs(name, styles)
+    {
+        var input = document.createElement("input");
+        input.name = "element[" + name + "][name]";
+        input.value = name;
+        input.type = "hidden";
+        document.body.appendChild(input);
+        
+        //each property
+        var count = 0;
+        $.each(styles, function(key, value) {
+            input = document.createElement("input");
+            input.name = "element[" + name + "][property][" + count + "][name]";
+            input.value = key;
+            input.type = "hidden";
+            document.body.appendChild(input);
+            
+            input = document.createElement("input");
+            input.name = "element[" + name + "][property][" + count + "][name]";
+            input.value = value;
+            input.type = "hidden";
+            document.body.appendChild(input);
+            
+            count++;
+        });
     }
 }
 
