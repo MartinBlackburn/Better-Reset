@@ -37,7 +37,7 @@ class UpdateProperties
         $result = $query->fetch(PDO::FETCH_ASSOC);
         
         if(!$result) {
-            //browser doesnt exists, save it and return its ID
+            //browser doesnt exist, save it and return its ID
             $sql = "INSERT INTO Browsers (Name, Version) VALUES (?, ?)";
             $query = $connection->prepare($sql);
             $query->execute(array($browserName, $browserVersion));
@@ -49,5 +49,39 @@ class UpdateProperties
         }
         
         return $browserId;
+    }
+    
+    
+    /**
+    * Save element to database
+    *
+    * @param string $elementName
+    *
+    * @return int $elementId
+    */
+    public function saveElement($elementName)
+    {
+        /* @var $connection PDO */
+        $connection = $this->connection;
+    
+        //check if element already exists
+        $sql = "SELECT ID FROM Elements WHERE Name = ?";
+        $query = $connection->prepare($sql);
+        $query->execute(array($elementName));
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+    
+        if(!$result) {
+            //element doesnt exist, save it and return its ID
+            $sql = "INSERT INTO Elements (Name) VALUES (?)";
+            $query = $connection->prepare($sql);
+            $query->execute(array($elementName));
+    
+            $elementId = $connection->lastInsertId();
+        } else {
+            //browser exists, return its ID
+            $elementId = $result["ID"];
+        }
+    
+        return $elementId;
     }
 }
