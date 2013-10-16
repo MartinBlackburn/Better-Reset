@@ -23,7 +23,7 @@ class UpdateProperties
      * @param string $browserName
      * @param string $browserVersion
      * 
-     * @return int $browserId
+     * @return int $browserID
      */
     public function saveBrowser($browserName, $browserVersion)
     {
@@ -42,13 +42,13 @@ class UpdateProperties
             $query = $connection->prepare($sql);
             $query->execute(array($browserName, $browserVersion));
             
-            $browserId = $connection->lastInsertId();
+            $browserID = $connection->lastInsertId();
         } else {
             //browser exists, return its ID
-            $browserId = $result["ID"];
+            $browserID = $result["ID"];
         }
         
-        return $browserId;
+        return $browserID;
     }
     
     
@@ -57,31 +57,61 @@ class UpdateProperties
     *
     * @param string $elementName
     *
-    * @return int $elementId
+    * @return int $elementID
     */
     public function saveElement($elementName)
     {
         /* @var $connection PDO */
         $connection = $this->connection;
-    
+        
         //check if element already exists
         $sql = "SELECT ID FROM Elements WHERE Name = ?";
         $query = $connection->prepare($sql);
         $query->execute(array($elementName));
         $result = $query->fetch(PDO::FETCH_ASSOC);
-    
+        
         if(!$result) {
             //element doesnt exist, save it and return its ID
             $sql = "INSERT INTO Elements (Name) VALUES (?)";
             $query = $connection->prepare($sql);
             $query->execute(array($elementName));
     
-            $elementId = $connection->lastInsertId();
+            $elementID = $connection->lastInsertId();
         } else {
             //browser exists, return its ID
-            $elementId = $result["ID"];
+            $elementID = $result["ID"];
         }
     
-        return $elementId;
+        return $elementID;
+    }
+    
+    
+    /**
+    * Save property to database
+    *
+    * @param string $propertyName
+    * @param string $propertyValue
+    * @param int $elementID
+    * @param int $browserID
+    */
+    public function saveProperty($propertyName, $propertyValue, $elementID, $browserID)
+    {
+        /* @var $connection PDO */
+        $connection = $this->connection;
+        
+        //check if property already exists
+        $sql = "SELECT ID FROM Properties WHERE Name = ? AND Value = ? AND ElementID = ? AND BrowserID = ?";
+        $query = $connection->prepare($sql);
+        $query->execute(array($propertyName, $propertyValue, $elementID, $browserID));
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if(!$result) {
+            //property doesnt exist, save it
+            $sql = "INSERT INTO Properties (Name, Value, ElementID, BrowserID) VALUES (?)";
+            $query = $connection->prepare($sql);
+            $query->execute(array($elementName));
+    
+            $elementID = $connection->lastInsertId();
+        }
     }
 }
