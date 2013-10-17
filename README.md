@@ -7,11 +7,12 @@ This is a list of all HTML elemets on a single page, with no styling applied.
 (warning its not pretty)
 
 **elementStyles/getStyles.js**  
-This gets all the styles for every element and creates a table (for each element) at the bottom of the page.  
-(warning, this make the page VERY large)
+This gets all the styles for every element on the page.  
+May post the result to a database?
 
 **comparison/index.html**  
-The index to all the comparison tables, with a way to select which table to view.
+The index to all the comparison tables, with a way to select which table to view. 
+Tables will be generated from the database
 
 **comparison/elements/element**  
 An element's table of CSS properties across each browser, this gets pulled into the index.  
