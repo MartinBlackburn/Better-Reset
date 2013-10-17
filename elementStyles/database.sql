@@ -21,7 +21,7 @@ CREATE TABLE `Properties` (
   `Display` int(11) NOT NULL DEFAULT '1',
   `Value` varchar(255) NOT NULL,
   `ElementID` int(11) NOT NULL,
-  `BroswerID` int(11) NOT NULL,
+  `BrowserID` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
