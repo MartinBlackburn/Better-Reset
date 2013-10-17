@@ -38,6 +38,16 @@ StyleList = function()
     })(jQuery.fn.allcss);
     
     
+    //form to attach inputs to
+    var form = document.getElementById("form");
+    
+    //fragment to attach inputs to.
+    var fragment = document.createDocumentFragment();
+    
+    //list of elements, so dont do the same one more than once
+    var elements = new Array();
+    
+    
     /*
      * Loop over every element
      */
@@ -59,10 +69,26 @@ StyleList = function()
             name = name + " (depth  " + $(this).parents("ol, ul").length + ")";
         }
         
-        //create a table of all the styles for this element
-        var styles = $(this).allcss();        
-        createInputs(name, styles);
+        //if not already done, add elements inputs
+        if(jQuery.inArray(name, elements) == -1) {
+            //add to array of elements
+            elements.push(name)
+            
+            //create a table of all the styles for this element
+            var styles = $(this).allcss();        
+            createInputs(name, styles);
+        }
     });
+    
+    //attach button to fragment
+    var button = document.createElement("input");
+    button.type = "submit";
+    button.value = "Update DB";
+    fragment.appendChild(button);
+    
+    //attach fragment to the form
+    form.appendChild(fragment);
+    
     
     /*
      * Format all styles into a table
@@ -82,31 +108,26 @@ StyleList = function()
         $('body').append(table);
     }
     
+    
     /*
      * Format all styles into inputs, for updating a database
      */
     function createInputs(name, styles)
     {
-        var input = document.createElement("input");
-        input.name = "element[" + name + "][name]";
-        input.value = name;
-        input.type = "hidden";
-        document.body.appendChild(input);
-        
         //each property
         var count = 0;
         $.each(styles, function(key, value) {
-            input = document.createElement("input");
+            var input = document.createElement("input");
             input.name = "element[" + name + "][property][" + count + "][name]";
             input.value = key;
             input.type = "hidden";
-            document.body.appendChild(input);
+            fragment.appendChild(input);
             
             input = document.createElement("input");
-            input.name = "element[" + name + "][property][" + count + "][name]";
+            input.name = "element[" + name + "][property][" + count + "][value]";
             input.value = value;
             input.type = "hidden";
-            document.body.appendChild(input);
+            fragment.appendChild(input);
             
             count++;
         });
