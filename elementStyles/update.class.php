@@ -93,6 +93,8 @@ class UpdateProperties
     * @param string $propertyValue
     * @param int $elementID
     * @param int $browserID
+    * 
+    * @return int $propertyID
     */
     public function saveProperty($propertyName, $propertyValue, $elementID, $browserID)
     {
@@ -107,11 +109,16 @@ class UpdateProperties
         
         if(!$result) {
             //property doesnt exist, save it
-            $sql = "INSERT INTO Properties (Name, Value, ElementID, BrowserID) VALUES (?)";
+            $sql = "INSERT INTO Properties (Name, Value, ElementID, BrowserID) VALUES (?, ?, ?, ?)";
             $query = $connection->prepare($sql);
-            $query->execute(array($elementName));
+            $query->execute(array($propertyName, $propertyValue, $elementID, $browserID));
     
-            $elementID = $connection->lastInsertId();
+            $propertyID = $connection->lastInsertId();
+        } else {
+            //browser exists, return its ID
+            $propertyID = $result["ID"];
         }
+        
+        return $propertyID;
     }
 }

@@ -48,6 +48,21 @@ StyleList = function()
     var elements = new Array();
     
     
+    //get browser id
+    var browser = "";
+    
+    $.ajax({
+	    type: "POST",
+	    url: "post.php",
+	    async: false,
+    	data: {browserName: "Chrome", broswerVersion: "30.0"},
+    	success: function(data) {
+    		browser = data;
+    		console.log("browser id = " + data);
+    	}
+    });
+    
+    
     /*
      * Loop over every element
      */
@@ -74,9 +89,9 @@ StyleList = function()
             //add to array of elements
             elements.push(name)
             
-            //create a table of all the styles for this element
+            //save all the styles for this element
             var styles = $(this).allcss();        
-            createInputs(name, styles);
+            postStyles(name, styles);
         }
     });
     
@@ -91,45 +106,35 @@ StyleList = function()
     
     
     /*
-     * Format all styles into a table
+     * save all styles to database
      */
-    function createTable(name, styles)
+    function postStyles(name, styles)
     {
-        //table heading with name
-        var table = $("<table></table>");
-        table.append('<thead><tr><th colspan="2">' + name + '</th></tr></thead>');
+    	//save the element and returns its ID
+    	var element = "";
         
-        //rows for each style
-        $.each(styles, function(key, value) {       		
-        	table.append('<tr><td>' + key + '</td><td>' + value + '</td></tr>');
+        $.ajax({
+    	    type: "POST",
+    	    url: "post.php",
+    	    async: false,
+        	data: {elementName: name},
+        	success: function(data) {
+        		element = data;
+        		console.log(name + " = " + data);
+        	}
         });
-        
-        //add table to end of page
-        $('body').append(table);
-    }
-    
-    
-    /*
-     * Format all styles into inputs, for updating a database
-     */
-    function createInputs(name, styles)
-    {
-        //each property
-        var count = 0;
+    	
+        //post each property for the element
         $.each(styles, function(key, value) {
-            var input = document.createElement("input");
-            input.name = "element[" + name + "][property][" + count + "][name]";
-            input.value = key;
-            input.type = "hidden";
-            fragment.appendChild(input);
-            
-            input = document.createElement("input");
-            input.name = "element[" + name + "][property][" + count + "][value]";
-            input.value = value;
-            input.type = "hidden";
-            fragment.appendChild(input);
-            
-            count++;
+        	$.ajax({
+        	    type: "POST",
+        	    url: "post.php",
+        	    async: false,
+            	data: {propertyName: key, propertyValue: value, elementID: element, browserID: browser},
+            	success: function(data) {
+            		console.log(key + " = " + data);
+            	}
+            });
         });
     }
 }
