@@ -11,6 +11,7 @@ CREATE TABLE `Browsers` (
 CREATE TABLE `Elements` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
+  `Type` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

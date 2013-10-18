@@ -69,24 +69,27 @@ StyleList = function(browserName, browserVersion)
         //get element name
         var name = element.tagName;
         
+        //add element type if needed
+        var type = "";
+        
         //add type if it exists (for inputs)
         if(element.type) {
-            name = name + " - " + element.type;
+            type = element.type;
         }
         
         //add nesting level for LIs, ULs and OLs
         if(element.tagName == "LI" || element.tagName == "UL" || element.tagName == "OL") {
-            name = name + " (depth  " + $(this).parents("ol, ul").length + ")";
+            type = type + " (depth  " + $(this).parents("ol, ul").length + ")";
         }
         
         //if not already done, add elements inputs
-        if(jQuery.inArray(name, elements) == -1) {
+        if(jQuery.inArray(name + type, elements) == -1) {
             //add to array of elements
-            elements.push(name)
+            elements.push(name + type)
             
             //save all the styles for this element
             var styles = $(this).allcss();        
-            postStyles(name, styles);
+            postStyles(name, type, styles);
         }
     });
     
@@ -95,7 +98,7 @@ StyleList = function(browserName, browserVersion)
     /*
      * save all styles to database
      */
-    function postStyles(name, styles)
+    function postStyles(name, type, styles)
     {
     	//save the element and returns its ID
     	var element = "";
@@ -104,13 +107,14 @@ StyleList = function(browserName, browserVersion)
     	    type: "POST",
     	    url: "post.php",
     	    async: false,
-        	data: {elementName: name},
+        	data: {elementName: name, elementType: type},
         	success: function(data) {
         		element = data;
         		console.log(name + " = " + data);
         	}
         });
     	
+        /*
         //post each property for the element
         $.each(styles, function(key, value) {
         	$.ajax({
@@ -122,7 +126,7 @@ StyleList = function(browserName, browserVersion)
             		console.log(key + " = " + data);
             	}
             });
-        });
+        });*/
     }
 }
 

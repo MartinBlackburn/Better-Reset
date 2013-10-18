@@ -114,25 +114,26 @@ class DatabaseModel
     * Save element to database
     *
     * @param string $elementName
+    * @param string $elementType
     *
     * @return int $elementID
     */
-    public function saveElement($elementName)
+    public function saveElement($elementName, $elementType)
     {
         /* @var $connection PDO */
         $connection = $this->connection;
         
         //check if element already exists
-        $sql = "SELECT ID FROM Elements WHERE Name = ?";
+        $sql = "SELECT ID FROM Elements WHERE Name = ? AND Type = ?";
         $query = $connection->prepare($sql);
-        $query->execute(array($elementName));
+        $query->execute(array($elementName, $elementType));
         $result = $query->fetch(PDO::FETCH_ASSOC);
         
         if(!$result) {
             //element doesnt exist, save it and return its ID
-            $sql = "INSERT INTO Elements (Name) VALUES (?)";
+            $sql = "INSERT INTO Elements (Name, Type) VALUES (?, ?)";
             $query = $connection->prepare($sql);
-            $query->execute(array($elementName));
+            $query->execute(array($elementName, $elementType));
     
             $elementID = $connection->lastInsertId();
         } else {

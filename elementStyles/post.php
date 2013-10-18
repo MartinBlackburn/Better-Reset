@@ -15,8 +15,9 @@ if($browserName && $browserVersion) {
 
 //save elements
 $elementName = isset($_POST["elementName"]) ? $_POST["elementName"] : false;
+$elementType = isset($_POST["elementType"]) ? $_POST["elementType"] : "";
 if($elementName) {
-	echo $update->saveElement($elementName);
+	echo $update->saveElement($elementName, $elementType);
 }
 
 
