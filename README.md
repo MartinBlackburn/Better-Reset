@@ -28,8 +28,3 @@ Only rows with differences will be displayed, as anything that is the same acros
 
 **reset/betterReset.css**  
 This will be the new reset, worked out from the comparison tables.
-
-**TODO**  
-Fix duplicate elements in DB caused by  
-* IE8 starts some elements (unsupported ones) with a "/". strip "/" from element names?  
-* Select, fieldset and textarea dont need a type. Ignore type for these elements?

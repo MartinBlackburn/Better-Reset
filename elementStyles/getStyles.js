@@ -67,6 +67,9 @@ StyleList = function(browserName, browserVersion)
         //get element name
         var name = element.tagName;
         
+        //replace slashes in names, do fix duplicate elements in IE8
+        name.replace("/", "");
+        
         //add element type if needed
         var type = "";
         
@@ -78,6 +81,11 @@ StyleList = function(browserName, browserVersion)
         //add nesting level for LIs, ULs and OLs
         if(element.tagName == "LI" || element.tagName == "UL" || element.tagName == "OL") {
             type = type + " (depth  " + $(this).parents("ol, ul").length + ")";
+        }
+        
+        //if element is select, fieldset or textarea, remove type, to fix duplicate elements in IE
+        if(name.toLowerCase() == "select" || name.toLowerCase() = "fieldset" || name.toLowerCase() = "textarea") {
+            type = "";
         }
         
         //if not already done, add elements inputs
