@@ -9,7 +9,7 @@ This is a list of all HTML elemets on a single page, with no styling applied.
 This gets all the styles for every element on the page, then post the results to the database.  
 Warning, this takes a while and may lock the browser until it finishes.
 
-**comparison/index.html**  
+**index.html**  
 The index to all the comparison tables, with a way to select which table (element) to view.
 
 **comparison/generateTables.php**  

@@ -1,8 +1,8 @@
 <?php
 
-include("update.class.php");
+include("../database/DatabaseModel.class.php");
 
-$update = new UpdateProperties();
+$update = new DatabaseModel();
 
 
 //save browsers
