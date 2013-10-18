@@ -1,4 +1,4 @@
-StyleList = function() 
+StyleList = function(browserName, browserVersion) 
 {	
     /*
      * Get all styles of an element
@@ -38,32 +38,27 @@ StyleList = function()
     })(jQuery.fn.allcss);
     
     
-    //form to attach inputs to
-    var form = document.getElementById("form");
-    
-    //fragment to attach inputs to.
-    var fragment = document.createDocumentFragment();
     
     //list of elements, so dont do the same one more than once
-    var elements = new Array();
-    
+    var elements = new Array();    
     
     //get browser id
     var browser = "";
     
     $.ajax({
-	    type: "POST",
-	    url: "post.php",
-	    async: false,
-    	data: {browserName: "Chrome", broswerVersion: "30.0"},
-    	success: function(data) {
-    		browser = data;
-    		console.log("browser id = " + data);
-    	}
+        type: "POST",
+        url: "post.php",
+        async: false,
+        data: {browserName: browserName, broswerVersion: browserVersion},
+        success: function(data) {
+            browser = data;
+            console.log("browser id = " + data);
+        }
     });
     
     
-    /*
+    
+    /**
      * Loop over every element
      */
     $("*").each(function()
@@ -95,14 +90,6 @@ StyleList = function()
         }
     });
     
-    //attach button to fragment
-    var button = document.createElement("input");
-    button.type = "submit";
-    button.value = "Update DB";
-    fragment.appendChild(button);
-    
-    //attach fragment to the form
-    form.appendChild(fragment);
     
     
     /*
@@ -141,5 +128,5 @@ StyleList = function()
 
 $(function() 
 {
-    var styleList = new StyleList();
+    var styleList = new StyleList("Chrome", "30.0.1599.101");
 });
