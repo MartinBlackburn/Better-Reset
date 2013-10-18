@@ -36,8 +36,7 @@ StyleList = function(browserName, browserVersion)
             return this.css();
         };
     })(jQuery.fn.allcss);
-    
-    
+        
     
     //list of elements, so dont do the same one more than once
     var elements = new Array();    
@@ -55,8 +54,7 @@ StyleList = function(browserName, browserVersion)
             console.log("browser id = " + data);
         }
     });
-    
-    
+        
     
     /**
      * Loop over every element
@@ -92,8 +90,7 @@ StyleList = function(browserName, browserVersion)
             postStyles(name, type, styles);
         }
     });
-    
-    
+        
     
     /*
      * save all styles to database
@@ -112,9 +109,8 @@ StyleList = function(browserName, browserVersion)
         		element = data;
         		console.log(name + " = " + data);
         	}
-        });
-    	
-        /*
+        });    	
+        
         //post each property for the element
         $.each(styles, function(key, value) {
         	$.ajax({
@@ -126,7 +122,7 @@ StyleList = function(browserName, browserVersion)
             		console.log(key + " = " + data);
             	}
             });
-        });*/
+        });
     }
 }
 
