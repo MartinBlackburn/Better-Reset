@@ -88,6 +88,10 @@ class DatabaseModel
         /* @var $connection PDO */
         $connection = $this->connection;
         
+        //trim whitespace
+        $browserName = trim($browserName);
+        $browserVersion = trim($browserVersion);
+        
         //check if browser already exists
         $sql = "SELECT ID FROM Browsers WHERE Name = ? AND Version = ?";
         $query = $connection->prepare($sql);
@@ -122,6 +126,10 @@ class DatabaseModel
     {
         /* @var $connection PDO */
         $connection = $this->connection;
+        
+        //trim whitespace
+        $elementName = trim($elementName);
+        $elementType = trim($elementType);
         
         //check if element already exists
         $sql = "SELECT ID FROM Elements WHERE Name = ? AND Type = ?";
@@ -159,6 +167,10 @@ class DatabaseModel
     {
         /* @var $connection PDO */
         $connection = $this->connection;
+        
+        //trim whitespace
+        $propertyName = trim($propertyName);
+        $propertyValue = trim($propertyValue);
         
         //check if property already exists
         $sql = "SELECT ID FROM Properties WHERE Name = ? AND Value = ? AND ElementID = ? AND BrowserID = ?";
