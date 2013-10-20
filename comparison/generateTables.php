@@ -14,6 +14,12 @@ $elements = $databaseModel->getElements();
 $numCols = count($browsers) + 1;
 
 //foreach element, create a table, with a column for each browser
+//<tr>
+//    <td>property name</td>
+//    <td>browser 1 value</td>
+//    <td>browser 2 value</td>
+//    <td>browser 3 value</td>
+//</tr>
 foreach($elements as $element)
 {
 	//element details
