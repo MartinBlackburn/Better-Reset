@@ -67,7 +67,8 @@ StyleList = function(browserName, browserVersion)
         //get element name
         var name = element.tagName;
         
-        //replace slashes in names, do fix duplicate elements in IE8
+        //remove slashes in names
+        //to fix duplicate elements in IE8
         name.replace("/", "");
         
         //add element type if needed
@@ -83,8 +84,9 @@ StyleList = function(browserName, browserVersion)
             type = type + " (depth  " + $(this).parents("ol, ul").length + ")";
         }
         
-        //if element is select, fieldset or textarea, remove type, to fix duplicate elements in IE
-        if(name.toLowerCase() == "select" || name.toLowerCase() = "fieldset" || name.toLowerCase() = "textarea") {
+        //if element is select, fieldset or textarea, remove type
+        //to fix duplicate elements in IE
+        if(name.toLowerCase() == "select" || name.toLowerCase() == "fieldset" || name.toLowerCase() == "textarea") {
             type = "";
         }
         
@@ -136,5 +138,7 @@ StyleList = function(browserName, browserVersion)
 
 $(function() 
 {
-    var styleList = new StyleList("Chrome", "30.0.1599.101");
+    setTimeout(function() {
+        var styleList = new StyleList("Chrome", "30.0.1599.101");
+    }, 1000);
 });
