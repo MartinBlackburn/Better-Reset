@@ -1,6 +1,6 @@
 <?php
 
-include("../database/DatabaseModel.class.php");
+include(dirname(__FILE__) . "/../database/DatabaseModel.class.php");
 
 $update = new DatabaseModel();
 
