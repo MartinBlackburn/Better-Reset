@@ -31,16 +31,17 @@ foreach($elements as $element)
 	echo "Creating $elementName table" . PHP_EOL;
     
     //create file
+    //overwrite existing
     $filename = $elementName;
     if($elementType) {
         $filename = $filename . '-' . $elementType;
     }
-    $file = 'elements/test/' . $filename . '.html';
-    
+    $file = dirname(__FILE__) . '/elements/test-' . $filename . '.html';
+        
     $fileData = "<table>\n";
     $fileData .= "    <thead>\n";
     $fileData .= "        <tr>\n";
-    $fileData .= "            <th>$elementName</th>\n";
+    $fileData .= "            <th>Property</th>\n";
     
     //create table headings
     foreach($browsers as $browser) {
@@ -51,17 +52,18 @@ foreach($elements as $element)
         $fileData .= "            <th>$browserName ($browserVersion)</th>\n";
     }
     
+    //close table headings
     $fileData .= "        <tr>\n";
     $fileData .= "    </thead>\n";
     $fileData .= "    <tbody>\n";
-    file_put_contents($file, $fileData, FILE_APPEND | LOCK_EX);
+    file_put_contents($file, $fileData, LOCK_EX);
     
     //$styles = $databaseModel->getStyles($elementID, $browserID);
     
     
     //close file
     $fileData = "    </tbody>\n";
-    $fileData = "</table>";
+    $fileData .= "</table>";
     file_put_contents($file, $fileData, FILE_APPEND | LOCK_EX);
     
     break;
