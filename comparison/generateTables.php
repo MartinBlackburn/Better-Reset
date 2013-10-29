@@ -11,7 +11,7 @@ $browsers = $databaseModel->getBrowsers();
 $elements = $databaseModel->getElements();
 
 //number of columns
-//+1 for the property name
+//+1 for the property name column
 $numCols = count($browsers) + 1;
 
 //foreach element, create a table, with a column for each browser
@@ -22,28 +22,31 @@ foreach($elements as $element)
     $elementName = $element['Name'];
     $elementType = $element['Type'];
     
+    //update with progress
 	echo "##### CREATING $elementName table #####" . PHP_EOL;
     
     //create file
-    //overwrite existing
     $filename = $elementName;
     if($elementType) {
         $filename = $filename . '-' . $elementType;
     }
     $file = dirname(__FILE__) . '/elements/test-' . $filename . '.html';
-        
+    
+    //open table
     $fileData = "<table>\n";
     $fileData .= "    <thead>\n";
     $fileData .= "        <tr>\n";
     $fileData .= "            <th>Property</th>\n";
     
     //create table headings
-    foreach($browsers as $browser) {
+    foreach($browsers as $browser)
+    {
         //browser details
         $browserID = $browser['ID'];
         $browserName = $browser['Name'];
         $browserVersion = $browser['Version'];
-
+        
+        //write column with browser name and version
         $fileData .= "            <th>$browserName ($browserVersion)</th>\n";
     }
     
@@ -51,41 +54,49 @@ foreach($elements as $element)
     $fileData .= "        <tr>\n";
     $fileData .= "    </thead>\n";
     $fileData .= "    <tbody>\n";
-    file_put_contents($file, $fileData, LOCK_EX);
     
     //get all posible properties
     $properties = $databaseModel->getProperties($elementID);
     
     //loop over each property
-    foreach($properties as $property) {
+    foreach($properties as $property)
+    {
         //property details
         $propertyID = $property['ID'];
         $propertyName = $property['Name'];
         
+        //update with progress
         echo "Processing $propertyName row" . PHP_EOL;
         
+        //open row
+        $fileData .= "        <tr>\n";
+        
         //add property name
-        $fileData = "        <tr>\n";
         $fileData .= "            <td>$propertyName</td>\n";
         
         //get value for each browser
-        foreach($browsers as $browser) {
+        foreach($browsers as $browser)
+        {
+            //browser details
             $browserID = $browser['ID'];
             
+            //get value
             $value = $databaseModel->getPropertyValue($elementID, $browserID, $propertyName);
-                        
+
+            //write column with value
             $fileData .= "            <td>$value</td>\n";
         }
         
-        //add row to file
+        //close row
         $fileData .= "        </tr>\n";
-        file_put_contents($file, $fileData, FILE_APPEND | LOCK_EX);
     } 
 
     echo "##### COMPLETED $elementName table #####" . PHP_EOL;
     
-    //close file
-    $fileData = "    </tbody>\n";
+    //close table
+    $fileData .= "    </tbody>\n";
     $fileData .= "</table>";
-    file_put_contents($file, $fileData, FILE_APPEND | LOCK_EX);
+    
+    //write all data to file
+    file_put_contents($file, $fileData, LOCK_EX);
 }
