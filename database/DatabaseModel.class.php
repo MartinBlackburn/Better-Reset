@@ -18,7 +18,7 @@ class DatabaseModel
     
     
     /**
-    * Get all browsers from database
+    * Get all browsers
     *
     * @return array $browsers
     */
@@ -37,7 +37,7 @@ class DatabaseModel
     
     
     /**
-     * Get all elements from database
+     * Get all elements
      *
      * @return array $elements
      */
@@ -56,22 +56,47 @@ class DatabaseModel
     
     
     /**
-     * Get all styles for an element/browser
+     * Get all properties for an element
+     *
+     * @param int $elementID
      *
      * @return array $properties
      */
-    public function getStyles($elementID, $browserID)
+    public function getProperties($elementID)
     {
         /* @var $connection PDO */
         $connection = $this->connection;
     
         //check if browser already exists
-        $sql = "SELECT * FROM Properties WHERE ElementID = ? AND BrowserID = ?";
+        $sql = "SELECT * FROM Properties WHERE ElementID = ? AND Display = 1 GROUP BY Name";
         $query = $connection->prepare($sql);
-        $query->execute(array($elementID, $browserID));
+        $query->execute(array($elementID));
         $properties = $query->fetchAll(PDO::FETCH_ASSOC);
     
         return $properties;
+    }
+    
+    /**
+    * Get property value
+    * 
+    * @param int $elementID
+    * @param int $browserID
+    * @param string $name
+    * 
+    * @return string $value
+    */
+    public function getPropertyValue($elementID, $browserID, $name)
+    {
+        /* @var $connection PDO */
+        $connection = $this->connection;
+    
+        //check if browser already exists
+        $sql = "SELECT Value FROM Properties WHERE ElementID = ? AND BrowserID = ? AND Name = ?";
+        $query = $connection->prepare($sql);
+        $query->execute(array($elementID, $browserID, $name));
+        $value = $query->fetch(PDO::FETCH_ASSOC);
+    
+        return $value["Value"];
     }
     
     

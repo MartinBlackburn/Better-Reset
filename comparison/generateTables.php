@@ -15,12 +15,6 @@ $elements = $databaseModel->getElements();
 $numCols = count($browsers) + 1;
 
 //foreach element, create a table, with a column for each browser
-//<tr>
-//    <td>property name</td>
-//    <td>browser 1 value</td>
-//    <td>browser 2 value</td>
-//    <td>browser 3 value</td>
-//</tr>
 foreach($elements as $element)
 {
 	//element details
@@ -28,7 +22,7 @@ foreach($elements as $element)
     $elementName = $element['Name'];
     $elementType = $element['Type'];
     
-	echo "Creating $elementName table" . PHP_EOL;
+	echo "##### CREATING $elementName table #####" . PHP_EOL;
     
     //create file
     //overwrite existing
@@ -45,6 +39,7 @@ foreach($elements as $element)
     
     //create table headings
     foreach($browsers as $browser) {
+        //browser details
         $browserID = $browser['ID'];
         $browserName = $browser['Name'];
         $browserVersion = $browser['Version'];
@@ -58,13 +53,39 @@ foreach($elements as $element)
     $fileData .= "    <tbody>\n";
     file_put_contents($file, $fileData, LOCK_EX);
     
-    //$styles = $databaseModel->getStyles($elementID, $browserID);
+    //get all posible properties
+    $properties = $databaseModel->getProperties($elementID);
     
+    //loop over each property
+    foreach($properties as $property) {
+        //property details
+        $propertyID = $property['ID'];
+        $propertyName = $property['Name'];
+        
+        echo "Processing $propertyName row" . PHP_EOL;
+        
+        //add property name
+        $fileData = "        <tr>\n";
+        $fileData .= "            <td>$propertyName</td>\n";
+        
+        //get value for each browser
+        foreach($browsers as $browser) {
+            $browserID = $browser['ID'];
+            
+            $value = $databaseModel->getPropertyValue($elementID, $browserID, $propertyName);
+                        
+            $fileData .= "            <td>$value</td>\n";
+        }
+        
+        //add row to file
+        $fileData .= "        </tr>\n";
+        file_put_contents($file, $fileData, FILE_APPEND | LOCK_EX);
+    } 
+
+    echo "##### COMPLETED $elementName table #####" . PHP_EOL;
     
     //close file
     $fileData = "    </tbody>\n";
     $fileData .= "</table>";
     file_put_contents($file, $fileData, FILE_APPEND | LOCK_EX);
-    
-    break;
 }
