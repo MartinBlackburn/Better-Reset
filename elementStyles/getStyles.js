@@ -59,6 +59,7 @@ StyleList = function(browserName, browserVersion)
     /**
      * Loop over every element
      */
+    var count = 0;
     $("*").each(function()
     {        
         //cache element
@@ -69,7 +70,7 @@ StyleList = function(browserName, browserVersion)
         
         //remove slashes in names
         //to fix duplicate elements in IE8
-        name.replace("/", "");
+        name = name.replace(/\\/g, '').replace(/\//g,'');
         
         //add element type if needed
         var type = "";
@@ -80,7 +81,7 @@ StyleList = function(browserName, browserVersion)
         }
         
         //add nesting level for LIs, ULs and OLs
-        if(element.tagName == "LI" || element.tagName == "UL" || element.tagName == "OL") {
+        if(name.toLowerCase() == "li" || name.toLowerCase() == "ul" || name.toLowerCase() == "ol") {
             type = type + " (depth  " + $(this).parents("ol, ul").length + ")";
         }
         
@@ -139,6 +140,6 @@ StyleList = function(browserName, browserVersion)
 $(function() 
 {
     setTimeout(function() {
-        var styleList = new StyleList("Chrome", "30.0.1599.101");
+        var styleList = new StyleList("IE", "10");
     }, 1000);
 });
