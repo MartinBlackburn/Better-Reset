@@ -21,21 +21,21 @@
 
         // get everything
         var dom = this.get(0);
+        
+        // format all names to be the same (background-image, not backgroundImage)
+        // helps to resolve duplicate names in IE
+        var sanitiseString = function(string)
+        {
+            // put a "-" before uppercase letters
+            var newString = string.replace( /([A-Z])/g, "-$1" );
+            
+            // lowercase the string
+            return newString.toLowerCase();
+        };
 
         // standards
         if (window.getComputedStyle)
         {
-            // format all names to be the same (background-image, not backgroundImage)
-            //helps to resolve duplicate names in IE
-            var sanitiseString = function(string)
-            {
-                // put a "-" before uppercase letters
-                var newString = string.replace( /([A-Z])/g, "-$1" );
-                
-                // lowercase the string
-                return newString.toLowerCase();
-            };
-
             // make sure we're getting a good reference
             if (style = window.getComputedStyle(dom, null))
             {

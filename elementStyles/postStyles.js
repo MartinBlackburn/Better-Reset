@@ -104,6 +104,6 @@ $(function()
 {
     //set time out so pages loads and doesn't look like it has crashed.
     setTimeout(function() {
-        var styleList = new StyleList("IE", "10");
+        var styleList = new StyleList("Chrome", "30.0.1599.101");
     }, 1000);
 });
